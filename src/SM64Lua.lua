@@ -47,6 +47,7 @@ dofile(core_path .. 'Locales.lua')
 dofile(core_path .. 'Presets.lua')
 dofile(core_path .. 'Dumping.lua')
 dofile(core_path .. 'Actions.lua')
+dofile(core_path .. 'Playback.lua')
 Addresses = dofile(core_path .. 'Addresses.lua')
 
 apply_math_shim()
@@ -64,6 +65,7 @@ local views = {
     dofile(views_path .. 'Settings.lua'),
     dofile(views_path .. 'Tools.lua'),
     dofile(views_path .. 'Timer.lua'),
+    dofile(views_path .. 'Playback.lua')
 }
 
 local semantic_workflow = dofile(processors_path .. 'SemanticWorkflow.lua')
@@ -140,6 +142,8 @@ local function at_input()
     for i = 1, #processors, 1 do
         Joypad.input = processors[i].process(Joypad.input)
     end
+
+    Playback.at_input()
 
     Joypad.send()
     Ghost.update()
