@@ -18,12 +18,12 @@ local STATE_BLOCKS <const> = {
 	{ addr = 0x8032DD34, size = 2 },		-- sSwimStrength
 	{ addr = 0x8032DD80, size = 0x18 },		-- save_file.o
 	{ addr = 0x8032DDF4, size = 2 },		-- gCurrSaveFileNum
-    { addr = 0x8032DF38, size = 4 },        -- gCurrLevelArea
+	{ addr = 0x8032DF38, size = 4 },		-- gCurrLevelArea
 	{ addr = 0x80330F3C, size = 4 },		-- gPaintingMarioYEntry
 	{ addr = 0x80331370, size = 0x368 },	-- ingame_menu.o
 	{ addr = 0x80332614, size = 2 },		-- sPrevCheckMarioRoom
 	{ addr = 0x8033B170, size = 0xC8 },		-- gMarioStates
-    { addr = 0x8033B260, size = 0x0E },		-- gHudDisplay
+	{ addr = 0x8033B260, size = 0x0E },		-- gHudDisplay
 	{ addr = 0x8033B3B0, size = 0x24 },		-- gBodyStates[0]
 	{ addr = 0x8033C61E, size = 2 },		-- sAvoidYawVel
 	{ addr = 0x8033C684, size = 2 },		-- sSelectionFlags
