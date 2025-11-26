@@ -338,7 +338,7 @@ function Playback.load_rom()
 	local data_start_ptr = read_u32(file)
 	local data_max_size = read_u32(file)
 	local num_recs = read_u32(file)
-	
+
 	local headers = {}
 	for i=1,num_recs do
 		local header = read_recording_header(file)
@@ -486,7 +486,7 @@ end
 
 local function filename_from_path(path)
 	local start, finish = path:find('[%w%s!-={-|]+[_%.].+')
-	return path:sub(start,#path) 
+	return path:sub(start,#path)
 end
 
 function Playback.get_rom_info()
@@ -582,7 +582,7 @@ local function update_start_state()
 		warp_trans_green = memory.readbyte(0x8032DDEC),
 		warp_trans_blue = memory.readbyte(0x8032DDF0)
 	}
-	
+
 	local state_data = ""
 	for i=1,#STATE_BLOCKS do
 		local addr_block = STATE_BLOCKS[i]
@@ -598,7 +598,7 @@ end
 local function check_recording_start()
 	if (START_STATE.level_load_params ~= nil) then
 		local warp_dest_type = memory.readbyte(0x8033B248)
-		if ((START_STATE.level_load_params.warp_type == 1) and (warp_dest_type == 0)) then -- level warp
+		if ((START_STATE.level_load_params.warp_type ~= 0) and (warp_dest_type == 0)) then -- level or area warp
 			Playback.recorded_start_state = true
 			add_recording_frame()
 			return
