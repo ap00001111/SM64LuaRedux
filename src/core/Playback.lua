@@ -37,6 +37,7 @@ local PREV_FRAME_VARS = {}
 local LAST_RECORDING_NAME = nil
 local LAST_RECORDING_LENGTH = nil
 local RECORDING_ERROR_MSG = nil
+local RECORDING_FROM_LEVEL_WARP = nil
 
 local DEFAULT_RECORDING_NAME <const> = "Unnamed Recording"
 
@@ -598,8 +599,10 @@ end
 
 local function check_recording_start()
 	if (START_STATE.level_load_params ~= nil) then
+		local warp_type = START_STATE.level_load_params.warp_type
 		local warp_dest_type = memory.readbyte(0x8033B248)
-		if ((START_STATE.level_load_params.warp_type ~= 0) and (warp_dest_type == 0)) then -- level or area warp
+		if ((warp_type ~= 0) and (warp_dest_type == 0)) then -- level or area warp
+			RECORDING_FROM_LEVEL_WARP = (warp_type == 1)
 			Playback.recorded_start_state = true
 			add_recording_frame()
 			return
@@ -688,7 +691,11 @@ function Playback.get_recording_info()
 	if Playback.is_recording then
 		length = #RECORDING_INPUTS
 		if Playback.recorded_start_state then
-			state_str = "Recording inputs"
+			if RECORDING_FROM_LEVEL_WARP then
+				state_str = "Recording inputs"
+			else
+				state_str = "Warning: Area transition may desync"
+			end
 		else
 			state_str = "Waiting for area transition"
 		end
