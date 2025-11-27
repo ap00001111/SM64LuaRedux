@@ -15,15 +15,16 @@ local DATA_MAX_SIZE = nil
 local STATE_BLOCKS <const> = {
 	{ addr = 0x80207700, size = 0x200 },	-- gSaveBuffer
 	{ addr = 0x8032D5D4, size = 4 },		-- gGlobalTimer
-	{ addr = 0x8032D93C, size = 4 },		-- gMarioState
 	{ addr = 0x8032DD34, size = 2 },		-- sSwimStrength
 	{ addr = 0x8032DD80, size = 0x18 },		-- save_file.o
 	{ addr = 0x8032DDF4, size = 2 },		-- gCurrSaveFileNum
+	{ addr = 0x8032DF38, size = 4 },		-- gCurrLevelArea
 	{ addr = 0x80330F3C, size = 4 },		-- gPaintingMarioYEntry
 	{ addr = 0x80331370, size = 0x368 },	-- ingame_menu.o
 	{ addr = 0x80332614, size = 2 },		-- sPrevCheckMarioRoom
 	{ addr = 0x8033B170, size = 0xC8 },		-- gMarioStates
-	{ addr = 0x8033B3B0, size = 0x24},		-- gBodyStates[0]
+	{ addr = 0x8033B260, size = 0x0E },		-- gHudDisplay
+	{ addr = 0x8033B3B0, size = 0x24 },		-- gBodyStates[0]
 	{ addr = 0x8033C61E, size = 2 },		-- sAvoidYawVel
 	{ addr = 0x8033C684, size = 2 },		-- sSelectionFlags
 	{ addr = 0x80361258, size = 2 },		-- gTTCSpeedSetting
@@ -338,7 +339,7 @@ function Playback.load_rom()
 	local data_start_ptr = read_u32(file)
 	local data_max_size = read_u32(file)
 	local num_recs = read_u32(file)
-	
+
 	local headers = {}
 	for i=1,num_recs do
 		local header = read_recording_header(file)
@@ -486,7 +487,7 @@ end
 
 local function filename_from_path(path)
 	local start, finish = path:find('[%w%s!-={-|]+[_%.].+')
-	return path:sub(start,#path) 
+	return path:sub(start,#path)
 end
 
 function Playback.get_rom_info()
@@ -582,7 +583,7 @@ local function update_start_state()
 		warp_trans_green = memory.readbyte(0x8032DDEC),
 		warp_trans_blue = memory.readbyte(0x8032DDF0)
 	}
-	
+
 	local state_data = ""
 	for i=1,#STATE_BLOCKS do
 		local addr_block = STATE_BLOCKS[i]
@@ -598,7 +599,7 @@ end
 local function check_recording_start()
 	if (START_STATE.level_load_params ~= nil) then
 		local warp_dest_type = memory.readbyte(0x8033B248)
-		if ((START_STATE.level_load_params.warp_type == 1) and (warp_dest_type == 0)) then -- level warp
+		if ((START_STATE.level_load_params.warp_type ~= 0) and (warp_dest_type == 0)) then -- level or area warp
 			Playback.recorded_start_state = true
 			add_recording_frame()
 			return
