@@ -15,8 +15,7 @@ return {
         if (ugui.button({
             uid = 901,
             rectangle = grid_rect(1, 1, 6, 1),
-            text = "Load ROM",
-
+            text = "Load ROM"
         })) then
             Playback.load_rom()
         end

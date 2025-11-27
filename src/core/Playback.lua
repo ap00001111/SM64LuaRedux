@@ -22,7 +22,7 @@ local STATE_BLOCKS <const> = {
 	{ addr = 0x80330F3C, size = 4 },		-- gPaintingMarioYEntry
 	{ addr = 0x80331370, size = 0x368 },	-- ingame_menu.o
 	{ addr = 0x80332614, size = 2 },		-- sPrevCheckMarioRoom
-	{ addr = 0x8033B170, size = 0xC8 },		-- gMarioStates
+	{ addr = 0x8033B170, size = 0xC8 },		-- gMarioStates[0]
 	{ addr = 0x8033B260, size = 0x0E },		-- gHudDisplay
 	{ addr = 0x8033B3B0, size = 0x24 },		-- gBodyStates[0]
 	{ addr = 0x8033C61E, size = 2 },		-- sAvoidYawVel
@@ -651,7 +651,7 @@ end
 
 function Playback.stop_recording()
 	local recording_length = #RECORDING_INPUTS
-	if (recording_length  == 0) then
+	if (recording_length == 0) then
 		Playback.cancel_recording()
 		return
 	elseif (recording_length >= 65536) then
